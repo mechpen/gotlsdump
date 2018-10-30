@@ -2,20 +2,20 @@
 
 Dump TLS payload for go applications.
 
-This tool uses bpf and uprobe to attach to two go functions:
+This tool uses `bpf` and `uprobe` to attach to two go functions:
 
-- crypto/tls.(*Conn).Read
-- crypto/tls.(*Conn).Write
+- `crypto/tls.(*Conn).Read`
+- `crypto/tls.(*Conn).Write`
 
-And dump the data contents passed to or returned from these functions.
+Then dumps data passed to `Write`, and data returned from `Read`.
 
-The `uretprobe` does not work with go applications, and using
-`uretprobe` could crash the application.  This is because go moves
-stacks around.  To safely catch return values of the tls `Read`
-function, we first disassemble the function, then attach `uprobe` to
-all `ret` instructions.
+The `uretprobe` does not work with go applications.  Using `uretprobe`
+could crash the application.  This is because go moves stacks around.
+To safely catch return values of the tls `Read` function, we first
+disassemble the function, then attach `uprobe` to all `ret`
+instructions.
 
-## Requirement
+## Requirements
 
 - bcc
 - python elftools
